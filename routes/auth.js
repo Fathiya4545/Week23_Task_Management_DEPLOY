@@ -2,10 +2,15 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import prisma from "../lib/prisma.js";
+import "dotenv/config.js";
 import { authenticateToken } from "../middleware/auth.js";
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
+const JWT_SECRET = process.env.JWT_SECRET;
+
+if (!JWT_SECRET) {
+  throw new Error ("JWT_SECRET environment variable is required");
+}
 
 // POST /api/auth/register - Register a new user
 router.post("/register", async (req, res) => {
